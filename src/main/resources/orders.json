@@ -1,0 +1,30 @@
+[
+    { "orderID" : "Order01",
+       "productID" : "P01",
+        "customerID" : "C01",
+        "voyageID": "V01",
+        "containerID": "FR01",
+        "quantity": 10,
+        "pickupDate": "2020/03/30",
+        "expectedDeliveryDate": "2020/05/30",
+        "pickupAddress": {"street": "1 main street", "city" : "Amsterdam", 
+            "country": "Neederland", "state": "AA", "zipcode": "92000"},
+        "destinationAddress": {"street": "12 main street", "city" : "san francisco", 
+            "country": "USA", "state": "CA", "zipcode": "92000"},
+        "status" : "pending"
+    },
+    { "orderID" : "Order02",
+        "productID" : "P02",
+         "customerID" : "C03",
+         "voyageID": "V02",
+        "containerID": "FR02",
+         "quantity": 7,
+         "pickupDate": "2020/02/20",
+         "expectedDeliveryDate": "2020/04/22",
+         "pickupAddress": {"street": "Vieux port", "city" : "Marseille", 
+            "country": "France", "state": "PACA", "zipcode": "13000"},
+         "destinationAddress": {"street": "12 blue horizon avenue", "city" : "san francisco", 
+             "country": "USA", "state": "CA", "zipcode": "92000"},
+         "status" : "pending"
+     }
+]

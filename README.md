@@ -7,6 +7,14 @@ th async request/response communication between Saga participant.
 
 The application uses Quarkus 2.4.x, AMQP and Reactive messaging.
 
+## Implementation approach
+
+We are using JAXRS resources and DTO to define OpenAPI contract.
+
+The resource class transforms DTO to an entity and emits event to Kafka to use it as an
+append log and transaction. 
+
+
 ## Read more to understand the implementation
 
 * [To understand the KContainer solution](https://ibm-cloud-architecture.github.io/refarch-kc/)

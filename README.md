@@ -9,10 +9,22 @@ The application uses Quarkus 2.4.x, AMQP and Reactive messaging.
 
 ## Implementation approach
 
-We are using JAXRS resources and DTO to define OpenAPI contract.
+We are using JAXRS resources and DTO to define OpenAPI contract ().
 
 The resource class transforms DTO to an entity and emits event to Kafka to use it as an
 append log and transaction. 
+
+## Continuous Integration
+
+This repo includes a git Action (see `.github/workflows` folder) to compile and build the image and push to an image registry.
+To make it working in your own forked repository you need to define the following git Secrets:
+> Settings > Secrets > New repository secret
+
+* DOCKER_REGISTRY   quay.io or your registry
+* DOCKER_IMAGE_NAME eda-kc-order-ms-mq
+* DOCKER_REPOSITORY ibmcase or your repo
+* DOCKER_USERNAME  your-image-registry-username
+* DOCKER_PASSWORD your-image-registry-password
 
 
 ## Read more to understand the implementation

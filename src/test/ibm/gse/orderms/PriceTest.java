@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @QuarkusTest
 public class PriceTest {

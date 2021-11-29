@@ -1,0 +1,14 @@
+{ "orderID" : "OrderTest",
+  "productID" : "TestP01",
+  "customerID" : "TestC01",
+  "voyageID": "TestV01",
+  "containerID": "TestFR01",
+  "quantity": 10,
+  "pickupDate": "2020/03/30",
+  "expectedDeliveryDate": "2020/05/30",
+  "pickupAddress": {"street": "1 main street", "city" : "Amsterdam",
+    "country": "Neederland", "state": "AA", "zipcode": "92000"},
+  "destinationAddress": {"street": "migliaccio street", "city" : "girifalco",
+    "country": "ITALY", "state": "CALABRIA", "zipcode": "88024"},
+  "status" : "pending"
+}

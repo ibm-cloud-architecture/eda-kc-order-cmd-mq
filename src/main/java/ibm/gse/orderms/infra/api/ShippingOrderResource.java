@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import ibm.gse.orderms.infra.jms.JMSQueueWriter;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
@@ -38,10 +39,14 @@ import ibm.gse.orderms.infra.api.dto.ShippingOrderReference;
 @Path("/api/v1/orders")
 @Produces(MediaType.APPLICATION_JSON)
 public class ShippingOrderResource {
+
 	static final Logger logger = LoggerFactory.getLogger(ShippingOrderResource.class);
 
 	@Inject
 	public ShippingOrderService shippingOrderService;
+
+	@Inject
+	private JMSQueueWriter<ShippingOrder> jmsQueueWriter;
 
 	public ShippingOrderResource() {
 	}
@@ -56,7 +61,7 @@ public class ShippingOrderResource {
     @APIResponses(value = {
             @APIResponse(responseCode = "400", description = "Bad create order request", content = @Content(mediaType = "application/json")),
             @APIResponse(responseCode = "200", description = "Order created, return order unique identifier", content = @Content(mediaType = "application/json")) })
-	public Response createShippingOrder(ShippingOrderCreateDTO createOrderParameters) {
+	public Response createShippingOrder(ShippingOrderCreateDTO createOrderParameters) throws Exception {
 		if (createOrderParameters == null ) {
 			return Response.status(400, "No parameter sent").build();
 		}
@@ -72,9 +77,25 @@ public class ShippingOrderResource {
 		} catch(Exception e) {
 			return Response.serverError().build();
 		}
-	    //return Response.ok().entity(order.getOrderID()).build();
+
+		try {
+			jmsQueueWriter.sendMessage(order, String.valueOf(System.getenv("ORDER_MESSAGE_QUEUE")));
+		} catch (Exception e) {
+			logger.error("Error writing message to the " + System.getenv("ORDER_MESSAGE_QUEUE") +
+					" queue. Rolling back.", e);
+			try {
+				//	TODO: ROLLBACK LOGIC TO BE IMPLEMENTED
+				jmsQueueWriter.sendMessage(order,
+						String.valueOf(System.getenv("ORDER_ROLLBACK_MESSAGE_QUEUE")));
+				// shippingOrderService.deleteOrder(order) ??
+			} catch (Exception rollBackException) {
+				logger.error("Could not rollback...", rollBackException);
+				throw rollBackException;
+			}
+		}
+		//return Response.ok().entity(order.getOrderID()).build();
 	    //API contract expects a JSON Object and not just a plaintext string
-	    return Response.ok().build();
+	    return Response.ok().entity(order.getOrderID()).build();
 	}
 
 

@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
 
+import ibm.gse.orderms.infra.repository.OrderUpdateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,4 +50,7 @@ public class ShippingOrderService {
 		return this.orderRepository.getOrderByOrderID(orderId);
 	}
 
+    public void updateOrder(ShippingOrder order) throws OrderUpdateException {
+		this.orderRepository.updateShippingOrder(order);
+    }
 }

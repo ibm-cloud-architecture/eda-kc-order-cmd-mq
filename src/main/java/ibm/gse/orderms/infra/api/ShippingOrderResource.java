@@ -15,7 +15,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import ibm.gse.orderms.infra.jms.JMSQueueWriter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import ibm.gse.orderms.infra.jms.producer.JMSQueueWriter;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
@@ -46,7 +47,7 @@ public class ShippingOrderResource {
 	public ShippingOrderService shippingOrderService;
 
 	@Inject
-	private JMSQueueWriter<ShippingOrder> jmsQueueWriter;
+	JMSQueueWriter<ShippingOrder> jmsQueueWriter;
 
 	public ShippingOrderResource() {
 	}
@@ -61,17 +62,22 @@ public class ShippingOrderResource {
     @APIResponses(value = {
             @APIResponse(responseCode = "400", description = "Bad create order request", content = @Content(mediaType = "application/json")),
             @APIResponse(responseCode = "200", description = "Order created, return order unique identifier", content = @Content(mediaType = "application/json")) })
-	public Response createShippingOrder(ShippingOrderCreateDTO createOrderParameters) throws Exception {
+	public Response createShippingOrder(String createOrderParameters) throws Exception {
+		ShippingOrderCreateDTO shippingOrderCreateDTO;
 		if (createOrderParameters == null ) {
 			return Response.status(400, "No parameter sent").build();
 		}
 		try {
-		   ShippingOrderCreateDTO.validateInputData(createOrderParameters);
+
+			ObjectMapper mapper = new ObjectMapper();
+			shippingOrderCreateDTO = mapper.readValue(createOrderParameters, ShippingOrderCreateDTO.class);
+		   	ShippingOrderCreateDTO.validateInputData(shippingOrderCreateDTO);
 
 		} catch(IllegalArgumentException iae) {
+			logger.error("Error decoding request body", iae);
 			return Response.status(400, iae.getMessage()).build();
 		}
-        ShippingOrder order = ShippingOrderCreateDTO.from(createOrderParameters);
+        ShippingOrder order = ShippingOrderCreateDTO.from(shippingOrderCreateDTO);
    	    try {
 			shippingOrderService.createOrder(order);
 		} catch(Exception e) {
@@ -79,15 +85,17 @@ public class ShippingOrderResource {
 		}
 
 		try {
-			jmsQueueWriter.sendMessage(order, String.valueOf(System.getenv("ORDER_MESSAGE_QUEUE")));
+			jmsQueueWriter.sendMessage(order, String.valueOf(System.getenv("VOYAGE_REQUEST_QUEUE")));
 		} catch (Exception e) {
-			logger.error("Error writing message to the " + System.getenv("ORDER_MESSAGE_QUEUE") +
+			logger.error("Error writing message to the " + System.getenv("VOYAGE_REQUEST_QUEUE") +
 					" queue. Rolling back.", e);
 			try {
-				//	TODO: ROLLBACK LOGIC TO BE IMPLEMENTED
+
+				order.setStatus(ShippingOrder.CANCELLED_STATUS);
+				shippingOrderService.updateOrder(order);
 				jmsQueueWriter.sendMessage(order,
-						String.valueOf(System.getenv("ORDER_ROLLBACK_MESSAGE_QUEUE")));
-				// shippingOrderService.deleteOrder(order) ??
+						String.valueOf(System.getenv("VOYAGE_REQUEST_QUEUE")));
+
 			} catch (Exception rollBackException) {
 				logger.error("Could not rollback...", rollBackException);
 				throw rollBackException;

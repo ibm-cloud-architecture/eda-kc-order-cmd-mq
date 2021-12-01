@@ -1,4 +1,4 @@
-package ibm.gse.orderms.infra.jms;
+package ibm.gse.orderms.infra.jms.producer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ import javax.jms.Session;
 public class JMSQueueWriter<T> {
 
     @Inject
-    private ConnectionFactory connectionFactory;
+    ConnectionFactory connectionFactory;
 
     private final ObjectMapper mapper = new ObjectMapper();
 

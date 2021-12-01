@@ -2,7 +2,7 @@ package ibm.gse.orderms;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ibm.gse.orderms.domain.model.order.ShippingOrder;
-import ibm.gse.orderms.infra.jms.JMSQueueWriter;
+import ibm.gse.orderms.infra.jms.producer.JMSQueueWriter;
 import org.jboss.logging.Logger;
 import org.junit.jupiter.api.Test;
 
@@ -14,15 +14,15 @@ import java.io.InputStream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @QuarkusTest
-public class PriceTest {
+public class JMSQueueWritingTest {
 
-    private static final Logger log = Logger.getLogger(PriceTest.class);
+    private static final Logger log = Logger.getLogger(JMSQueueWritingTest.class);
 
     @Inject
     private JMSQueueWriter<ShippingOrder> jmsQueueWriter;
 
     @Test
-    public void testLastPrice() throws Exception {
+    public void test() throws Exception {
         assertDoesNotThrow(() ->
             jmsQueueWriter.sendMessage(getOrderFromTestFile(), "DEV.QUEUE.1")
         );

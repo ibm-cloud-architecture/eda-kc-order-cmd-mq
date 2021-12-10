@@ -8,16 +8,18 @@ package ibm.gse.orderms.domain.events;
  */
 public class EventBase {
 
-	 public static final String ORDER_CREATED_TYPE = "OrderCreated";
-	 public static final String ORDER_UPDATED_TYPE = "OrderUpdated";
-     public static final String TYPE_VOYAGE_ASSIGNED = "VoyageAssigned"; // from voyage ms
-     public static final String TYPE_VOYAGE_NOT_FOUND = "VoyageNotFound"; // from voyage ms
-	 public static final String ORDER_REJECTED_TYPE = "OrderRejected";
-     public static final String ORDER_CANCELLED_TYPE = "OrderCancelled";
-     public static final String TYPE_ORDER_SPOILT = "OrderSpoilt"; // from containers ms
+	public static final String ORDER_CREATED_TYPE = "OrderCreated";
+	public static final String ORDER_UPDATED_TYPE = "OrderUpdated";
+    public static final String TYPE_VOYAGE_ASSIGNED = "VoyageAssigned"; // from voyage ms
+    public static final String TYPE_VOYAGE_NOT_FOUND = "VoyageNotFound"; // from voyage ms
+    public static final String TYPE_VOYAGE_CANCELED = "VoyageCanceled"; // from voyage ms
+
+    public static final String ORDER_REJECTED_TYPE = "OrderRejected";
+    public static final String ORDER_CANCELLED_TYPE = "OrderCancelled";
+    public static final String TYPE_ORDER_SPOILT = "OrderSpoilt"; // from containers ms
 	   
-	 public static final String TYPE_CONTAINER_ALLOCATED = "ContainerAllocated";
-     public static final String TYPE_CONTAINER_NOT_FOUND = "ContainerNotFound";
+	public static final String TYPE_CONTAINER_ALLOCATED = "ContainerAllocated";
+    public static final String TYPE_CONTAINER_NOT_FOUND = "ContainerNotFound";
     
 
 	    

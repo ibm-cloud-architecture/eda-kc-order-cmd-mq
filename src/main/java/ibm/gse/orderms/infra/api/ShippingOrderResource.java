@@ -16,6 +16,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ibm.gse.orderms.domain.events.EventBase;
+import ibm.gse.orderms.domain.events.order.OrderCancelAndRejectPayload;
+import ibm.gse.orderms.domain.events.order.OrderCancelledEvent;
+import ibm.gse.orderms.domain.events.order.OrderEvent;
+import ibm.gse.orderms.domain.events.order.OrderEventPayload;
 import ibm.gse.orderms.infra.jms.producer.JMSQueueWriter;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -47,7 +52,7 @@ public class ShippingOrderResource {
 	public ShippingOrderService shippingOrderService;
 
 	@Inject
-	JMSQueueWriter<ShippingOrder> jmsQueueWriter;
+	JMSQueueWriter<EventBase> jmsQueueWriter;
 
 	public ShippingOrderResource() {
 	}
@@ -85,7 +90,9 @@ public class ShippingOrderResource {
 		}
 
 		try {
-			jmsQueueWriter.sendMessage(order, String.valueOf(System.getenv("VOYAGE_REQUEST_QUEUE")));
+			OrderEventPayload orderEventPayload = new OrderEventPayload(order);
+			OrderEvent orderEvent = new OrderEvent(System.currentTimeMillis(), EventBase.ORDER_CREATED_TYPE, "1.0", orderEventPayload);
+			jmsQueueWriter.sendMessage(orderEvent, String.valueOf(System.getenv("VOYAGE_REQUEST_QUEUE")));
 		} catch (Exception e) {
 			logger.error("Error writing message to the " + System.getenv("VOYAGE_REQUEST_QUEUE") +
 					" queue. Rolling back.", e);
@@ -93,7 +100,10 @@ public class ShippingOrderResource {
 
 				order.setStatus(ShippingOrder.CANCELLED_STATUS);
 				shippingOrderService.updateOrder(order);
-				jmsQueueWriter.sendMessage(order,
+
+				OrderCancelAndRejectPayload payload = new OrderCancelAndRejectPayload(order, e.getMessage());
+				OrderCancelledEvent orderCancelledEvent = new OrderCancelledEvent(System.currentTimeMillis(), "1.0", payload);
+				jmsQueueWriter.sendMessage(orderCancelledEvent,
 						String.valueOf(System.getenv("VOYAGE_REQUEST_QUEUE")));
 
 			} catch (Exception rollBackException) {

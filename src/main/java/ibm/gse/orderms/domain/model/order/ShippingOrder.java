@@ -15,7 +15,10 @@ public class ShippingOrder {
     public static final String ASSIGNED_STATUS = "assigned";
     public static final String REJECTED_STATUS = "rejected";
     public static final String SPOILT_STATUS = "spoilt";
-    
+    //
+    public static final String ON_HOLD = "on hold";
+
+
     private String orderID;
     private String productID;
     private String customerID;

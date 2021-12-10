@@ -3,6 +3,8 @@ package ibm.gse.orderms.infra.api.dto;
 import ibm.gse.orderms.domain.model.order.Address;
 import ibm.gse.orderms.domain.model.order.ShippingOrder;
 
+import java.util.UUID;
+
 public class ShippingOrderDTO {
 
     public String customerID;
@@ -15,7 +17,7 @@ public class ShippingOrderDTO {
 
 
     public static ShippingOrder from(ShippingOrderDTO inDTO) {
-        return new ShippingOrder("",
+        return new ShippingOrder(UUID.randomUUID().toString(),
         inDTO.productID,
         inDTO.customerID,
         inDTO.quantity,

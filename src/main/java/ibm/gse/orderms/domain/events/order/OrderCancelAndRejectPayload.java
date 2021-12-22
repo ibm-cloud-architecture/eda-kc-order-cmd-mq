@@ -1,6 +1,7 @@
 package ibm.gse.orderms.domain.events.order;
 
 import ibm.gse.orderms.domain.model.order.Address;
+import ibm.gse.orderms.domain.model.order.ShippingOrder;
 
 public class OrderCancelAndRejectPayload extends OrderEventPayload {
 
@@ -15,6 +16,14 @@ public class OrderCancelAndRejectPayload extends OrderEventPayload {
         this.voyageID = voyageID;
         this.reason = reason;
     }
+
+	public OrderCancelAndRejectPayload(ShippingOrder order, String reason) {
+		super(order.getOrderID(), order.getProductID(), order.getCustomerID(), order.getQuantity(), order.getPickupAddress(),
+				order.getPickupDate(), order.getDestinationAddress(), order.getExpectedDeliveryDate(), order.getStatus());
+		this.containerID = order.getContainerID();
+		this.voyageID = order.getVoyageID();
+		this.reason = reason;
+	}
 
 	public String getContainerID() {
 		return containerID;

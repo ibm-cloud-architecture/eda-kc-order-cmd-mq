@@ -3,6 +3,8 @@ package ibm.gse.orderms.infra.api.dto;
 import ibm.gse.orderms.domain.model.order.Address;
 import ibm.gse.orderms.domain.model.order.ShippingOrder;
 
+import java.util.UUID;
+
 public class ShippingOrderDTO {
 
     public String customerID;
@@ -15,16 +17,15 @@ public class ShippingOrderDTO {
 
 
     public static ShippingOrder from(ShippingOrderDTO inDTO) {
-        ShippingOrder orderEntity = new ShippingOrder("", 
-        inDTO.productID, 
-        inDTO.customerID, 
-        inDTO.quantity, 
-        inDTO.pickupAddress, 
-        inDTO.pickupDate, 
-        inDTO.destinationAddress, 
+        return new ShippingOrder(UUID.randomUUID().toString(),
+        inDTO.productID,
+        inDTO.customerID,
+        inDTO.quantity,
+        inDTO.pickupAddress,
+        inDTO.pickupDate,
+        inDTO.destinationAddress,
         inDTO.expectedDeliveryDate,
         ShippingOrder.PENDING_STATUS);
-        return orderEntity;
     }
     
     public String getProductID() {
@@ -84,7 +85,17 @@ public class ShippingOrderDTO {
     }
 
     public static ShippingOrderDTO fromEntity(ShippingOrder order) {
-        return null;
+
+        ShippingOrderDTO shippingOrderDTO = new ShippingOrderDTO();
+        shippingOrderDTO.setCustomerID(order.getCustomerID());
+        shippingOrderDTO.setDestinationAddress(order.getDestinationAddress());
+        shippingOrderDTO.setPickupAddress(order.getPickupAddress());
+        shippingOrderDTO.setQuantity(order.getQuantity());
+        shippingOrderDTO.setPickupDate(order.getPickupDate());
+        shippingOrderDTO.setExpectedDeliveryDate(order.getExpectedDeliveryDate());
+        shippingOrderDTO.setProductID(order.getProductID());
+
+        return shippingOrderDTO;
     }
 
 

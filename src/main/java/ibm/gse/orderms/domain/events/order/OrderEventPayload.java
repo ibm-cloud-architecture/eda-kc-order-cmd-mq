@@ -2,6 +2,7 @@ package ibm.gse.orderms.domain.events.order;
 
 import java.util.UUID;
 
+import ibm.gse.orderms.domain.model.order.ShippingOrder;
 import ibm.gse.orderms.infra.api.dto.ShippingOrderCreateDTO;
 import ibm.gse.orderms.infra.api.dto.ShippingOrderUpdateParameters;
 import ibm.gse.orderms.domain.model.order.Address;
@@ -55,6 +56,19 @@ public class OrderEventPayload {
 		this.pickupDate = createParams.getPickupDate();
 		this.destinationAddress = createParams.getDestinationAddress();
 		this.expectedDeliveryDate = createParams.getExpectedDeliveryDate();
+		this.status = "toBeCreated";
+	}
+
+	public OrderEventPayload(ShippingOrder shippingOrder) {
+		super();
+		this.orderID = shippingOrder.getOrderID();
+		this.productID = shippingOrder.getProductID();
+		this.customerID = shippingOrder.getCustomerID();
+		this.quantity = shippingOrder.getQuantity();
+		this.pickupAddress = shippingOrder.getPickupAddress();
+		this.pickupDate = shippingOrder.getPickupDate();
+		this.destinationAddress = shippingOrder.getDestinationAddress();
+		this.expectedDeliveryDate = shippingOrder.getExpectedDeliveryDate();
 		this.status = "toBeCreated";
 	}
 

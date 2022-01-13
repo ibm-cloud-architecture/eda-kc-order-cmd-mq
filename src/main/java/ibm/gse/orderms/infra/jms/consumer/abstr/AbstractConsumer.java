@@ -36,7 +36,7 @@ public abstract class AbstractConsumer implements Runnable {
 
     @Override
     public void run() {
-        log.info("Connecting to message queue" + getResponseQueue());
+        log.info("Connecting to message queue " + getResponseQueue());
         try (JMSContext context = connectionFactory.createContext(Session.AUTO_ACKNOWLEDGE)) {
             javax.jms.JMSConsumer consumer = context.createConsumer(
                     context.createQueue(getResponseQueue()));

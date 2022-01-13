@@ -1,6 +1,5 @@
 package ibm.gse.orderms.infra.jms.consumer.abstr;
 
-import ibm.gse.orderms.infra.jms.consumer.FreezerResponseListener;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import org.jboss.logging.Logger;
@@ -21,7 +20,7 @@ public abstract class AbstractConsumer implements Runnable {
 
     private final ExecutorService scheduler = Executors.newSingleThreadExecutor();
 
-    protected static final Logger log = Logger.getLogger(FreezerResponseListener.class);
+    protected static final Logger log = Logger.getLogger(AbstractConsumer.class);
 
     @Inject
     ConnectionFactory connectionFactory;

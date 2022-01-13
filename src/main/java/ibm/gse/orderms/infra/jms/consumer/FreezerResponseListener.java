@@ -8,25 +8,12 @@ import ibm.gse.orderms.domain.model.order.ShippingOrder;
 import ibm.gse.orderms.domain.service.ShippingOrderService;
 import ibm.gse.orderms.infra.jms.consumer.abstr.AbstractConsumer;
 import ibm.gse.orderms.infra.jms.producer.JMSQueueWriter;
-import io.quarkus.runtime.ShutdownEvent;
-import io.quarkus.runtime.StartupEvent;
 import io.vertx.core.json.JsonObject;
-import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSContext;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-/**
- * A bean consuming prices from the JMS queue.
- */
+
 @ApplicationScoped
 public class FreezerResponseListener extends AbstractConsumer {
 

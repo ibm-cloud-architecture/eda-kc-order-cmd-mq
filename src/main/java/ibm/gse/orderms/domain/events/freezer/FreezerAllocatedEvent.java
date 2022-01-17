@@ -1,7 +1,9 @@
 package ibm.gse.orderms.domain.events.freezer;
 
 import ibm.gse.orderms.domain.events.EventBase;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
+@RegisterForReflection
 public class FreezerAllocatedEvent extends EventBase {
 
 	private String orderID;

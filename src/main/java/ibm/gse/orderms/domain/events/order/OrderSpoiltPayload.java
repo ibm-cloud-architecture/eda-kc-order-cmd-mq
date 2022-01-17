@@ -1,5 +1,8 @@
 package ibm.gse.orderms.domain.events.order;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
+@RegisterForReflection
 public class OrderSpoiltPayload {
 
 	 private String orderID;

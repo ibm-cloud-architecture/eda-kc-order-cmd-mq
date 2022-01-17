@@ -1,8 +1,10 @@
 package ibm.gse.orderms.domain.model.order;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+@RegisterForReflection
 public class Address {
     private String street;
     private String city;

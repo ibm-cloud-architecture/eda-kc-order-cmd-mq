@@ -1,11 +1,14 @@
 package ibm.gse.orderms.domain.events;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
 /**
  * This is the common part of the order events. 
  * Events are data element, so limit inheritance and polymorphism.
  * @author jerome boyer
  *
  */
+@RegisterForReflection
 public class EventBase {
 
 	public static final String ORDER_CREATED_TYPE = "OrderCreated";

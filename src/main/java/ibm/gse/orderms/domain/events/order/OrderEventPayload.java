@@ -6,6 +6,7 @@ import ibm.gse.orderms.domain.model.order.ShippingOrder;
 import ibm.gse.orderms.infra.api.dto.ShippingOrderCreateDTO;
 import ibm.gse.orderms.infra.api.dto.ShippingOrderUpdateParameters;
 import ibm.gse.orderms.domain.model.order.Address;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
 /**
  * Better to have a different model for the shipping order as event payload
@@ -15,6 +16,7 @@ import ibm.gse.orderms.domain.model.order.Address;
  * @author jerome boyer
  *
  */
+@RegisterForReflection
 public class OrderEventPayload {
 	private String orderID;
     private String productID;

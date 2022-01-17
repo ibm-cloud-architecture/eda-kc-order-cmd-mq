@@ -1,5 +1,6 @@
 package ibm.gse.orderms.domain.model.order;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -8,6 +9,7 @@ import ibm.gse.orderms.domain.events.order.OrderCancelAndRejectPayload;
 import ibm.gse.orderms.domain.events.order.OrderEventPayload;
 import ibm.gse.orderms.domain.events.voyage.VoyageAssignmentPayload;
 
+@RegisterForReflection
 public class ShippingOrder {
 
     public static final String PENDING_STATUS = "pending";

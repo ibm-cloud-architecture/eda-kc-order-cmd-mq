@@ -1,7 +1,9 @@
 package ibm.gse.orderms.domain.events.order;
 
 import ibm.gse.orderms.domain.events.EventBase;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
+@RegisterForReflection
 public class OrderRejectEvent extends EventBase {
 
     private OrderCancelAndRejectPayload payload;

@@ -1,5 +1,8 @@
 package ibm.gse.orderms.domain.events.voyage;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
+@RegisterForReflection
 public class VoyageAssignmentPayload {
 
     private String orderID;

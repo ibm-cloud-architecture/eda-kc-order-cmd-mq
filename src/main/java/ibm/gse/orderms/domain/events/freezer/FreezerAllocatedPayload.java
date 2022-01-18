@@ -6,7 +6,8 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 public class FreezerAllocatedPayload {
 	 private String orderID;
 	 private String containerID;
-	 
+
+	 public FreezerAllocatedPayload() { }
 	 public FreezerAllocatedPayload(String oid, String cid) {
 		 this.orderID = oid;
 		 this.containerID = cid;

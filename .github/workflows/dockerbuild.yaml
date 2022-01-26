@@ -7,7 +7,6 @@ on:
       - 'docs/**'
       - 'scripts/**'
       - 'README.md'
-      - '**.yaml'
 
 jobs:
   validate-docker-secrets:
@@ -70,7 +69,7 @@ jobs:
 
         echo "Build and push the docker image $IMAGE_NAME"
         cd ${WORKDIR}
-        mvn package -DskipTests
+        mvn package -DskipTests -Dquarkus.container-image.build=false -Dquarkus.kubernetes.deploy=false
         docker build -f ${DOCKERFILE} -t ${IMAGE_NAME}:${IMAGE_TAG} . 
         docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest
         docker push ${IMAGE_NAME}

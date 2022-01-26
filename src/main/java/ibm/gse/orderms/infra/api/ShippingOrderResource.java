@@ -16,12 +16,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ibm.gse.orderms.domain.events.EventBase;
-import ibm.gse.orderms.domain.events.order.OrderCancelAndRejectPayload;
-import ibm.gse.orderms.domain.events.order.OrderCancelledEvent;
-import ibm.gse.orderms.domain.events.order.OrderEvent;
-import ibm.gse.orderms.domain.events.order.OrderEventPayload;
-import ibm.gse.orderms.infra.jms.producer.JMSQueueWriter;
+
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
@@ -29,10 +24,16 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ibm.gse.orderms.domain.events.EventBase;
+import ibm.gse.orderms.domain.events.order.OrderCancelAndRejectPayload;
+import ibm.gse.orderms.domain.events.order.OrderCancelledEvent;
+import ibm.gse.orderms.domain.events.order.OrderEvent;
+import ibm.gse.orderms.domain.events.order.OrderEventPayload;
 import ibm.gse.orderms.domain.model.order.ShippingOrder;
 import ibm.gse.orderms.domain.service.ShippingOrderService;
 import ibm.gse.orderms.infra.api.dto.ShippingOrderCreateDTO;
 import ibm.gse.orderms.infra.api.dto.ShippingOrderReference;
+import ibm.gse.orderms.infra.jms.producer.JMSQueueWriter;
 
 /**
  * Expose the commands and APIs used by external clients to manage
@@ -53,6 +54,7 @@ public class ShippingOrderResource {
 
 	@Inject
 	JMSQueueWriter<EventBase> jmsQueueWriter;
+
 
 	public ShippingOrderResource() {
 	}

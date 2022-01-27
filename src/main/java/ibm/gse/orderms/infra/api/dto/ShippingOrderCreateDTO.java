@@ -5,7 +5,7 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
-@RegisterForReflection
+@RegisterForReflection  
 public class ShippingOrderCreateDTO extends ShippingOrderDTO {
 
 	
@@ -30,8 +30,8 @@ public class ShippingOrderCreateDTO extends ShippingOrderDTO {
         }
 
         try {
-            OffsetDateTime.parse(co.getExpectedDeliveryDate(), DateTimeFormatter.ISO_DATE_TIME);
-            OffsetDateTime.parse(co.getPickupDate(), DateTimeFormatter.ISO_DATE_TIME);
+            // OffsetDateTime.parse(co.getExpectedDeliveryDate(), DateTimeFormatter.ISO_DATE_TIME);
+            // OffsetDateTime.parse(co.getPickupDate(), DateTimeFormatter.ISO_DATE_TIME);
         } catch (RuntimeException rex) {
             throw new IllegalArgumentException(rex);
         }

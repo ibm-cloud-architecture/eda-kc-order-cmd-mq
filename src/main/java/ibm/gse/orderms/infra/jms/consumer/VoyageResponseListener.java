@@ -24,7 +24,7 @@ public class VoyageResponseListener extends AbstractConsumer {
 
     @Override
     public String getRequestQueue() {
-        return String.valueOf(System.getenv("VOYAGE_REQUEST_QUEUE"));
+        return String.valueOf(System.getenv("FREEZER_REQUEST_QUEUE"));
     }
 
     @Override
@@ -48,18 +48,19 @@ public class VoyageResponseListener extends AbstractConsumer {
                 String orderId = voyageNotFoundEvent.getPayload().getOrderID();
 
                 ShippingOrder shippingOrder = shippingOrderService.getOrderByOrderID(orderId).orElseThrow();
-                shippingOrder.setStatus(ShippingOrder.CANCELLED_STATUS);
+                shippingOrder.cancelVoyage();
                 shippingOrderService.updateOrder(shippingOrder);
 
-            } else if(rawEvent.getString("type").equals(EventBase.TYPE_VOYAGE_NOT_FOUND)){
+            } else if(rawEvent.getString("type").equals(EventBase.TYPE_VOYAGE_CANCELED)){
 
-                VoyageCanceledEvent voyageNotFoundEvent = mapper.readValue(rawEvent.toString(),
+                VoyageCanceledEvent voyageCanceledEvent = mapper.readValue(rawEvent.toString(),
                         VoyageCanceledEvent.class);
 
-                String orderId = voyageNotFoundEvent.getPayload().getOrderID();
+                String orderId = voyageCanceledEvent.getPayload().getOrderID();
 
                 ShippingOrder shippingOrder = shippingOrderService.getOrderByOrderID(orderId).orElseThrow();
-                shippingOrder.setStatus(ShippingOrder.CANCELLED_STATUS);
+
+                shippingOrder.cancelVoyage();
                 shippingOrderService.updateOrder(shippingOrder);
 
             } else if(rawEvent.getString("type").equals(EventBase.TYPE_VOYAGE_ASSIGNED)) {
@@ -73,7 +74,9 @@ public class VoyageResponseListener extends AbstractConsumer {
                 shippingOrder.setStatus(ShippingOrder.ON_HOLD);
                 shippingOrder.assign(voyageAssignedEvent.getPayload());
                 shippingOrderService.updateOrder(shippingOrder);
-
+                if(shippingOrder.getProductID().equals("REFEER_FAILS")) {
+                    voyageAssignedEvent.getPayload().setProductId("REFEER_FAILS");
+                }
                 jmsQueueWriter.sendMessage(voyageAssignedEvent, getRequestQueue());
             }
         } catch (Exception e) {

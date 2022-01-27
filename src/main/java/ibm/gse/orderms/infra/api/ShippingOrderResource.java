@@ -90,9 +90,11 @@ public class ShippingOrderResource {
 		}
 
 		try {
+
 			OrderEventPayload orderEventPayload = new OrderEventPayload(order);
 			OrderEvent orderEvent = new OrderEvent(System.currentTimeMillis(), EventBase.ORDER_CREATED_TYPE, "1.0", orderEventPayload);
 			jmsQueueWriter.sendMessage(orderEvent, String.valueOf(System.getenv("VOYAGE_REQUEST_QUEUE")));
+
 		} catch (Exception e) {
 			logger.error("Error writing message to the " + System.getenv("VOYAGE_REQUEST_QUEUE") +
 					" queue. Rolling back.", e);

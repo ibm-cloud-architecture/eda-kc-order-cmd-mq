@@ -12,6 +12,8 @@ public class FreezerNotFoundPayload {
 		 this.reason = reason;
 	 }
 
+	public FreezerNotFoundPayload() { }
+
 	public String getOrderID() {
 		return orderID;
 	}

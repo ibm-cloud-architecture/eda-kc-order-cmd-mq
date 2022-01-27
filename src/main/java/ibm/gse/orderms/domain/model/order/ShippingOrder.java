@@ -19,6 +19,9 @@ public class ShippingOrder {
     public static final String SPOILT_STATUS = "spoilt";
     //
     public static final String ON_HOLD = "on hold";
+    public static final String VOYAGE_CANCELLED_STATUS = "voyageCancelled";
+    public static final String REFEER_UNAVAILABLE_STATUS = "refeerUnavailable";
+
 
 
     private String orderID;
@@ -212,4 +215,15 @@ public class ShippingOrder {
 	public String getContainerID() {
 		return containerID;
 	}
+
+    public void cancelVoyage() {
+        this.voyageID = null;
+        if(!this.status.equals(ShippingOrder.REFEER_UNAVAILABLE_STATUS)) {
+            this.setStatus(ShippingOrder.VOYAGE_CANCELLED_STATUS);
+        }
+    }
+    public void cancelRefeer() {
+        this.containerID = null;
+        this.setStatus(ShippingOrder.REFEER_UNAVAILABLE_STATUS);
+    }
 }

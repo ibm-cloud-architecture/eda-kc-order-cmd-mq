@@ -1,7 +1,6 @@
 package ibm.gse.orderms.infra.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import ibm.gse.orderms.domain.model.order.ShippingOrder;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 

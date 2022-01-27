@@ -10,6 +10,7 @@ import ibm.gse.orderms.domain.service.ShippingOrderService;
 import ibm.gse.orderms.infra.jms.consumer.abstr.AbstractConsumer;
 import ibm.gse.orderms.infra.jms.producer.JMSQueueWriter;
 import io.vertx.core.json.JsonObject;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 

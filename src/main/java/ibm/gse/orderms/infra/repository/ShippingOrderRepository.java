@@ -1,9 +1,9 @@
 package ibm.gse.orderms.infra.repository;
 
+import ibm.gse.orderms.domain.model.order.ShippingOrder;
+
 import java.util.List;
 import java.util.Optional;
-
-import ibm.gse.orderms.domain.model.order.ShippingOrder;
 
 
 public interface ShippingOrderRepository {

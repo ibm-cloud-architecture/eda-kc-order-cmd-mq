@@ -2,9 +2,6 @@ package ibm.gse.orderms.infra.api.dto;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-
 @RegisterForReflection  
 public class ShippingOrderCreateDTO extends ShippingOrderDTO {
 

@@ -1,20 +1,18 @@
 package ibm.gse.orderms.domain.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import javax.enterprise.context.ApplicationScoped;
-
-import ibm.gse.orderms.infra.repository.OrderUpdateException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import ibm.gse.orderms.domain.model.order.ShippingOrder;
 import ibm.gse.orderms.infra.api.dto.ShippingOrderReference;
 import ibm.gse.orderms.infra.repository.OrderCreationException;
+import ibm.gse.orderms.infra.repository.OrderUpdateException;
 import ibm.gse.orderms.infra.repository.ShippingOrderRepository;
 import ibm.gse.orderms.infra.repository.ShippingOrderRepositoryMock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.enterprise.context.ApplicationScoped;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class ShippingOrderService {

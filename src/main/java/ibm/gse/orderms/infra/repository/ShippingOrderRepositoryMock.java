@@ -1,5 +1,11 @@
 package ibm.gse.orderms.infra.repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import ibm.gse.orderms.domain.model.order.ShippingOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -7,15 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-
-import javax.inject.Singleton;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import ibm.gse.orderms.domain.model.order.ShippingOrder;
 
 /**
  * In memory repository... just to make it simple and for testing 

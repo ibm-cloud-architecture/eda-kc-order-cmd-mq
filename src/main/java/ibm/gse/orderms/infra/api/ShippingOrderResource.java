@@ -18,11 +18,6 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ibm.gse.orderms.domain.events.EventBase;
-import ibm.gse.orderms.domain.events.order.OrderCancelAndRejectPayload;
-import ibm.gse.orderms.domain.events.order.OrderCancelledEvent;
-import ibm.gse.orderms.domain.events.order.OrderEvent;
-import ibm.gse.orderms.domain.events.order.OrderEventPayload;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -36,7 +31,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import java.util.List;
 import java.util.Optional;
-import ibm.gse.orderms.infra.jms.producer.JMSQueueWriter;
 
 /**
  * Expose the commands and APIs used by external clients to manage

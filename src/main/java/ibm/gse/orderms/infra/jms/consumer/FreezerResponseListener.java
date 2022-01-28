@@ -24,9 +24,7 @@ public class FreezerResponseListener extends AbstractConsumer {
     JMSQueueWriter<EventBase> jmsQueueWriter;
 
 
-    /*
-    This is the last step of the saga, so is not needed to send any message on any queue at the end of the message processing
-     */
+
     @Override
     public String getRequestQueue() {
         return String.valueOf(System.getenv("VOYAGE_REQUEST_QUEUE"));

@@ -218,7 +218,7 @@ public class ShippingOrder {
     public void cancelVoyage() {
         this.voyageID = null;
         if(!this.status.equals(ShippingOrder.REFEER_UNAVAILABLE_STATUS)) {
-            this.setStatus(ShippingOrder.VOYAGE_CANCELLED_STATUS);
+            this.setStatus(ShippingOrder.ON_HOLD);
         }
     }
     public void cancelRefeer() {

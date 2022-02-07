@@ -43,6 +43,8 @@ public class VoyageResponseListener extends AbstractConsumer {
 
             if(rawEvent.getString("type").equals(EventBase.TYPE_VOYAGE_NOT_FOUND)) {
 
+                log.info("Voyage canceled received, updating order");
+
                 VoyageNotFoundEvent voyageNotFoundEvent = mapper.readValue(rawEvent.toString(),
                         VoyageNotFoundEvent.class);
 
@@ -53,6 +55,8 @@ public class VoyageResponseListener extends AbstractConsumer {
                 shippingOrderService.updateOrder(shippingOrder);
 
             } else if(rawEvent.getString("type").equals(EventBase.TYPE_VOYAGE_CANCELED)){
+
+                log.info("Voyage canceled received, updating order");
 
                 VoyageCanceledEvent voyageCanceledEvent = mapper.readValue(rawEvent.toString(),
                         VoyageCanceledEvent.class);
@@ -65,6 +69,8 @@ public class VoyageResponseListener extends AbstractConsumer {
                 shippingOrderService.updateOrder(shippingOrder);
 
             } else if(rawEvent.getString("type").equals(EventBase.TYPE_VOYAGE_ASSIGNED)) {
+
+                log.info("Voyage Assigned received, updating order");
 
                 VoyageAssignedEvent voyageAssignedEvent = mapper.readValue(rawEvent.toString(),
                         VoyageAssignedEvent.class);

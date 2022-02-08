@@ -2,9 +2,11 @@ package ibm.gse.orderms.infra.api.dto;
 
 import ibm.gse.orderms.domain.model.order.Address;
 import ibm.gse.orderms.domain.model.order.ShippingOrder;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
 import java.util.UUID;
 
+@RegisterForReflection
 public class ShippingOrderDTO {
 
     public String customerID;

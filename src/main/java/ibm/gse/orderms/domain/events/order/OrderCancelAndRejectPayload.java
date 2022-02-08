@@ -2,7 +2,9 @@ package ibm.gse.orderms.domain.events.order;
 
 import ibm.gse.orderms.domain.model.order.Address;
 import ibm.gse.orderms.domain.model.order.ShippingOrder;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
+@RegisterForReflection
 public class OrderCancelAndRejectPayload extends OrderEventPayload {
 
     private String containerID;

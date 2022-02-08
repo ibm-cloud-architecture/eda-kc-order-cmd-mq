@@ -1,6 +1,7 @@
 package ibm.gse.orderms.domain.events.order;
 
 import ibm.gse.orderms.domain.events.EventBase;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
 /**
  * Order event for the state change of a shipping order
@@ -10,6 +11,7 @@ import ibm.gse.orderms.domain.events.EventBase;
  * @author jeromeboyer
  *
  */
+@RegisterForReflection
 public class OrderEvent extends EventBase {
 
    

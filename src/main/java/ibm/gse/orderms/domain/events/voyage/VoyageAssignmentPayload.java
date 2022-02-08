@@ -1,9 +1,13 @@
 package ibm.gse.orderms.domain.events.voyage;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
+@RegisterForReflection
 public class VoyageAssignmentPayload {
 
     private String orderID;
     private String voyageID;
+    private String productId = "validProductId";
 
     public VoyageAssignmentPayload(String orderID, String voyageID) {
         this.orderID = orderID;
@@ -28,4 +32,11 @@ public class VoyageAssignmentPayload {
         this.voyageID = voyageID;
     }
 
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
 }

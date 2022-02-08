@@ -1,16 +1,14 @@
 package ibm.gse.orderms.infra.api;
 
-import java.util.logging.Logger;
+import io.quarkus.runtime.StartupEvent;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-
-import io.quarkus.runtime.StartupEvent;
+import java.util.logging.Logger;
 
 @Path("/api/v1/version")
 @ApplicationScoped

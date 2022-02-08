@@ -1,13 +1,14 @@
 package ibm.gse.orderms.domain.model.order;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import ibm.gse.orderms.domain.events.freezer.FreezerAllocatedPayload;
 import ibm.gse.orderms.domain.events.order.OrderCancelAndRejectPayload;
 import ibm.gse.orderms.domain.events.order.OrderEventPayload;
 import ibm.gse.orderms.domain.events.voyage.VoyageAssignmentPayload;
+import io.quarkus.runtime.annotations.RegisterForReflection;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+@RegisterForReflection
 public class ShippingOrder {
 
     public static final String PENDING_STATUS = "pending";
@@ -17,6 +18,9 @@ public class ShippingOrder {
     public static final String SPOILT_STATUS = "spoilt";
     //
     public static final String ON_HOLD = "on hold";
+    public static final String VOYAGE_CANCELLED_STATUS = "voyageCancelled";
+    public static final String REFEER_UNAVAILABLE_STATUS = "refeerUnavailable";
+
 
 
     private String orderID;
@@ -210,4 +214,15 @@ public class ShippingOrder {
 	public String getContainerID() {
 		return containerID;
 	}
+
+    public void cancelVoyage() {
+        this.voyageID = null;
+        if(!this.status.equals(ShippingOrder.REFEER_UNAVAILABLE_STATUS)) {
+            this.setStatus(ShippingOrder.ON_HOLD);
+        }
+    }
+    public void cancelRefeer() {
+        this.containerID = null;
+        this.setStatus(ShippingOrder.REFEER_UNAVAILABLE_STATUS);
+    }
 }

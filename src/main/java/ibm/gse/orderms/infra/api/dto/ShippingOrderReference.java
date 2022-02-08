@@ -1,5 +1,9 @@
 package ibm.gse.orderms.infra.api.dto;
 
+
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
+@RegisterForReflection
 public class ShippingOrderReference {
 	 private String orderID;
 	 private String customerID;

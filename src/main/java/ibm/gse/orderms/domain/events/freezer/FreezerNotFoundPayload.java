@@ -1,5 +1,8 @@
 package ibm.gse.orderms.domain.events.freezer;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
+@RegisterForReflection
 public class FreezerNotFoundPayload {
 	 private String orderID;
 	 private String reason;
@@ -8,6 +11,8 @@ public class FreezerNotFoundPayload {
 		 this.orderID = oid;
 		 this.reason = reason;
 	 }
+
+	public FreezerNotFoundPayload() { }
 
 	public String getOrderID() {
 		return orderID;

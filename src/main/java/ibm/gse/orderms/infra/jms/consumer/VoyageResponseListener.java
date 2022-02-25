@@ -11,8 +11,7 @@ import ibm.gse.orderms.infra.jms.consumer.abstr.AbstractConsumer;
 import ibm.gse.orderms.infra.jms.producer.JMSQueueWriter;
 import io.smallrye.reactive.messaging.kafka.Record;
 import io.vertx.core.json.JsonObject;
-import org.eclipse.microprofile.reactive.messaging.Channel;
-import org.eclipse.microprofile.reactive.messaging.Emitter;
+
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -26,9 +25,7 @@ public class VoyageResponseListener extends AbstractConsumer {
     @Inject
     JMSQueueWriter<EventBase> jmsQueueWriter;
 
-   // @Inject
-   // @Channel("orders-status-out")
-   public Emitter<Record<String, String>> emitter;
+
 
 
     @Override
@@ -61,8 +58,7 @@ public class VoyageResponseListener extends AbstractConsumer {
                 ShippingOrder shippingOrder = shippingOrderService.getOrderByOrderID(orderId).orElseThrow();
                 shippingOrder.cancelVoyage();
                 shippingOrderService.updateOrder(shippingOrder);
-                String orderjson = mapper.writeValueAsString(shippingOrder);
-                emitter.send(Record.of(shippingOrder.getOrderID(), orderjson));
+                shippingOrderService.sendMessages(shippingOrder);
 
 
             } else if(rawEvent.getString("type").equals(EventBase.TYPE_VOYAGE_CANCELED)){
@@ -78,8 +74,7 @@ public class VoyageResponseListener extends AbstractConsumer {
 
                 shippingOrder.cancelVoyage();
                 shippingOrderService.updateOrder(shippingOrder);
-                String orderjson = mapper.writeValueAsString(shippingOrder);
-                emitter.send(Record.of(shippingOrder.getOrderID(), orderjson));
+                shippingOrderService.sendMessages(shippingOrder);
 
 
             } else if(rawEvent.getString("type").equals(EventBase.TYPE_VOYAGE_ASSIGNED)) {
@@ -96,8 +91,8 @@ public class VoyageResponseListener extends AbstractConsumer {
                 shippingOrder.assign(voyageAssignedEvent.getPayload());
                 shippingOrderService.updateOrder(shippingOrder);
 
-                String orderjson = mapper.writeValueAsString(shippingOrder);
-                emitter.send(Record.of(shippingOrder.getOrderID(), orderjson));
+
+                shippingOrderService.sendMessages(shippingOrder);
 
                 if(shippingOrder.getProductID().equals("REFEER_FAILS")) {
                     voyageAssignedEvent.getPayload().setProductId("REFEER_FAILS");

@@ -41,6 +41,12 @@ public class ShippingOrder {
     public ShippingOrder() {
     }
 
+    public ShippingOrder(String orderID, String status) {
+        super();
+        this.orderID = orderID;
+        this.status = status;
+    }
+
     public ShippingOrder(String orderID, String productID, String customerID, int quantity, Address pickupAddress,
             String pickupDate, Address destinationAddress, String expectedDeliveryDate, String status) {
         super();

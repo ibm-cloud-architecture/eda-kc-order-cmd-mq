@@ -8,7 +8,10 @@ import ibm.gse.orderms.domain.model.order.ShippingOrder;
 import ibm.gse.orderms.domain.service.ShippingOrderService;
 import ibm.gse.orderms.infra.jms.consumer.abstr.AbstractConsumer;
 import ibm.gse.orderms.infra.jms.producer.JMSQueueWriter;
+import io.smallrye.reactive.messaging.kafka.Record;
 import io.vertx.core.json.JsonObject;
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -23,6 +26,9 @@ public class FreezerResponseListener extends AbstractConsumer {
     @Inject
     JMSQueueWriter<EventBase> jmsQueueWriter;
 
+    //@Inject
+    //@Channel("orders-status-out")
+    public Emitter<Record<String, String>> emitter;
 
 
     @Override
@@ -55,6 +61,9 @@ public class FreezerResponseListener extends AbstractConsumer {
                 shippingOrder.assignContainer(freezerAllocatedEvent.getPayload());
                 shippingOrderService.updateOrder(shippingOrder);
 
+                String orderjson = mapper.writeValueAsString(shippingOrder);
+                emitter.send(Record.of(shippingOrder.getOrderID(), orderjson));
+
             } else if(rawEvent.getString("type").equals(EventBase.TYPE_CONTAINER_NOT_FOUND)
                 || rawEvent.getString("type").equals(EventBase.TYPE_CONTAINER_CANCELED)) {
 
@@ -66,6 +75,9 @@ public class FreezerResponseListener extends AbstractConsumer {
 
                 shippingOrder.setStatus(ShippingOrder.CANCELLED_STATUS);
                 shippingOrderService.updateOrder(shippingOrder);
+                String orderjson = mapper.writeValueAsString(shippingOrder);
+                emitter.send(Record.of(shippingOrder.getOrderID(), orderjson));
+
 
                 jmsQueueWriter.sendMessage(freezerNotFoundEvent, getRequestQueue());
 

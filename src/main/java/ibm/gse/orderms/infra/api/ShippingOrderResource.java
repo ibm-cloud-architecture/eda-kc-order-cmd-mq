@@ -6,6 +6,7 @@ import ibm.gse.orderms.domain.events.order.OrderCancelAndRejectPayload;
 import ibm.gse.orderms.domain.events.order.OrderCancelledEvent;
 import ibm.gse.orderms.domain.events.order.OrderEvent;
 import ibm.gse.orderms.domain.events.order.OrderEventPayload;
+import ibm.gse.orderms.domain.model.order.Address;
 import ibm.gse.orderms.domain.model.order.ShippingOrder;
 import ibm.gse.orderms.domain.service.ShippingOrderService;
 import ibm.gse.orderms.infra.api.dto.ShippingOrderCreateDTO;
@@ -32,6 +33,12 @@ import javax.ws.rs.core.Response.Status;
 import java.util.List;
 import java.util.Optional;
 
+import io.smallrye.reactive.messaging.kafka.Record;
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
+
+import io.smallrye.mutiny.Multi;
+
 /**
  * Expose the commands and APIs used by external clients to manage
  * the ShippingOrder Entity
@@ -52,6 +59,10 @@ public class ShippingOrderResource {
 	@Inject
 	JMSQueueWriter<EventBase> jmsQueueWriter;
 
+	//BK
+	@Inject
+	@Channel("orders-status-out")
+	public Emitter<Record<String, String>> emitter;
 
 	public ShippingOrderResource() {
 	}
@@ -68,12 +79,12 @@ public class ShippingOrderResource {
             @APIResponse(responseCode = "200", description = "Order created, return order unique identifier", content = @Content(mediaType = "application/json")) })
 	public Response createShippingOrder(String createOrderParameters) throws Exception {
 		ShippingOrderCreateDTO shippingOrderCreateDTO;
+		ObjectMapper mapper = new ObjectMapper();
 		if (createOrderParameters == null ) {
 			return Response.status(400, "No parameter sent").build();
 		}
 		try {
 
-			ObjectMapper mapper = new ObjectMapper();
 			shippingOrderCreateDTO = mapper.readValue(createOrderParameters, ShippingOrderCreateDTO.class);
 		   	ShippingOrderCreateDTO.validateInputData(shippingOrderCreateDTO);
 
@@ -93,6 +104,8 @@ public class ShippingOrderResource {
 			OrderEventPayload orderEventPayload = new OrderEventPayload(order);
 			OrderEvent orderEvent = new OrderEvent(System.currentTimeMillis(), EventBase.ORDER_CREATED_TYPE, "1.0", orderEventPayload);
 			jmsQueueWriter.sendMessage(orderEvent, String.valueOf(System.getenv("VOYAGE_REQUEST_QUEUE")));
+			String orderjson = mapper.writeValueAsString(order);
+			emitter.send(Record.of(order.getOrderID(), orderjson));
 
 		} catch (Exception e) {
 			logger.error("Error writing message to the " + System.getenv("VOYAGE_REQUEST_QUEUE") +
@@ -101,6 +114,10 @@ public class ShippingOrderResource {
 
 				order.setStatus(ShippingOrder.CANCELLED_STATUS);
 				shippingOrderService.updateOrder(order);
+				//BK - emit status to Kafka
+				String orderjson = mapper.writeValueAsString(order);
+				emitter.send(Record.of(order.getOrderID(), orderjson));
+
 
 				OrderCancelAndRejectPayload payload = new OrderCancelAndRejectPayload(order, e.getMessage());
 				OrderCancelledEvent orderCancelledEvent = new OrderCancelledEvent(System.currentTimeMillis(), "1.0", payload);
